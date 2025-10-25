@@ -6,13 +6,12 @@
  *
  * https://www.electronjs.org/docs/latest/tutorial/sandbox
  */
-window.addEventListener('DOMContentLoaded', () => {
-  const replaceText = (selector, text) => {
-    const element = document.getElementById(selector)
-    if (element) element.innerText = text
-  }
+const { contextBridge, ipcRenderer } = require('electron')
 
-  for (const type of ['chrome', 'node', 'electron']) {
-    replaceText(`${type}-version`, process.versions[type])
-  }
+contextBridge.exposeInMainWorld('electronAPI', {
+  // Function to request local time from main process
+  getTime: () => ipcRenderer.send('get-time'),
+
+  // Function to listen for the time response
+  onTimeResponse: (callback) => ipcRenderer.on('time-response', callback)
 })

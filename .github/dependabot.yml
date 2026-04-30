@@ -9,3 +9,25 @@ updates:
   versioning-strategy: increase
   cooldown:
     default-days: 7
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "monthly"
+  cooldown:
+    default-days: 7
+  groups:
+    # Creates a separate PR for each non-security-related major update.
+    major-version-updates:
+      applies-to: "version-updates"
+      group-by: "dependency-name"
+      update-types: ["major"]
+
+    # Creates a single PR with all non-security-related minor/patch updates.
+    non-major-version-updates:
+      applies-to: "version-updates"
+      update-types: ["minor", "patch"]
+
+    # Creates a single PR with all security-related updates.
+    security-updates:
+      applies-to: "security-updates"
+      update-types: ["major", "minor", "patch"]

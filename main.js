@@ -12,8 +12,10 @@ function createWindow () {
     }
   })
 
-  // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  // and load the index.html of the app with error handling.
+mainWindow.loadFile('index.html').catch(err => {
+  console.error('Failed to load index.html:', err)
+ })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
